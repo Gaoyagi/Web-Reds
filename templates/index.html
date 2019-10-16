@@ -1,0 +1,15 @@
+<!-- templates/index.html -->
+<!-- home page, displays title, start game button, link for rules, and eventually current player count -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome to Web Reds</h1>
+    <form  action='/game_start'>
+        <button class='btn btn-primary' type='submit'>Start Game</button>
+    </form>
+
+    <form  action='/rules'>
+        <button class='btn btn-primary' type='submit'>Rules</button>
+    </form>
+
+{% endblock %}
