@@ -1,5 +1,40 @@
 <!-- templates/start.html -->
-<!-- starts the game up and initalizes the players -->
+<!-- displays the cards but it shows the your bottom 2 cards -->
 {% extends 'base.html' %}
 
-pl
+{% block content%}
+    <table>
+        <tr>
+            <td>
+                <img src="../static/cardBack.jpeg" alt="card back" height = 250 width=200>
+                <p>Deck: {{deck["remaining"]}} cards left</p>
+            </td>
+            <td>
+                <img src="../static/discard.jpeg" alt="discard" height = 250 width=200>
+                <p>Discard Pile</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="../static/cardBack.jpeg" alt="card back" height = 250 width=200>
+            </td>
+            <td>
+                <img src="../static/cardBack.jpeg" alt="card back" height = 250 width=200>
+            </td>
+            
+        </tr>
+        <tr>
+                <td>
+                    <img src="{{hands[2]['image']}}" alt="revealed card" height = 250 width=200>
+                </td>
+                <td>
+                    <img src="{{hands[3]['image']}}" alt="revealed card" height = 250 width=200>
+                </td>
+                
+            </tr>
+    </table>
+
+    <form action='/game/{{deck["deck_id"]}}/{{deck["remaining"]}}'>
+        <button class='btn btn-primary' type='submit'>Ready to play</button>
+    </form>
+{% endblock %}

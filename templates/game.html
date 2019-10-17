@@ -1,2 +1,40 @@
 <!-- templates/game.html -->
 <!-- displays deck and hand (normal state) -->
+{% extends 'base.html' %}
+
+{% block content%}
+    <table>
+        <tr>
+            <td>
+                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+                <p>Deck: {{cardsLeft}} cards left</p>
+                <form  action='/game/draw/{{deckID}}/{{cardsLeft}}'>
+                    <button class='btn btn-primary' type='submit'>Draw</button>
+                </form>
+            </td>
+            <td>
+                <img src="{{url_for('static', filename= 'discard.jpeg')}}" alt="card back" height = 250 width=200>
+                <p>Discard Pile</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+            </td>
+            <td>
+                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+            </td>
+            
+        </tr>
+        <tr>
+                <td>
+                    <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+                </td>
+                <td>
+                    <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+                </td>
+                
+            </tr>
+    </table>
+
+{% endblock %}

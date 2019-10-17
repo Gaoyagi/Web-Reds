@@ -1,0 +1,42 @@
+<!-- templates/draw.html
+displays deck, discard pile. player hand, and drawn card and give player option to exchange card or discard it -->
+{% extends 'base.html' %}
+
+{% block content%}
+    <table>
+        <tr>
+            <td>
+                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+                <p>Deck: {{cardsLeft}} cards left</p>
+            </td>
+            <td>
+                <form method='POST' action="/game/discard/{{deckID}}/{{card['code']}}">
+                    <input type="image" src="{{url_for('static', filename= 'discard.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
+                </form>
+                <p>Discard pile</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+            </td>
+            <td>
+                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+            </td>
+            <td>
+                <img src='{{card["image"]}}' alt="drawn card" height=250 width=200>
+            </td>
+            
+        </tr>
+        <tr>
+            <td>
+                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+            </td>
+            <td>
+                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+            </td>
+                
+        </tr>
+    </table>
+
+{% endblock %}
