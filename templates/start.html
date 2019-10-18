@@ -4,16 +4,19 @@
 
 {% block content%}
     <table>
+        <!-- Shows the deck and the discard pile -->
         <tr>
             <td>
                 <img src="../static/cardBack.jpeg" alt="card back" height = 250 width=200>
                 <p>Deck: {{deck["remaining"]}} cards left</p>
             </td>
+            <!-- bc the game has jsut started the discard pile defaults to being empty -->
             <td>
                 <img src="../static/discard.jpeg" alt="discard" height = 250 width=200>
                 <p>Discard Pile</p>
             </td>
         </tr>
+        <!-- displays card backs representing the player's hand -->
         <tr>
             <td>
                 <img src="../static/cardBack.jpeg" alt="card back" height = 250 width=200>
@@ -21,8 +24,8 @@
             <td>
                 <img src="../static/cardBack.jpeg" alt="card back" height = 250 width=200>
             </td>
-            
         </tr>
+        <!-- displays the 2 bottom cards to the player -->
         <tr>
                 <td>
                     <img src="{{hands[2]['image']}}" alt="revealed card" height = 250 width=200>
@@ -34,6 +37,7 @@
             </tr>
     </table>
 
+    <!-- when the player thinks they've memorized their cards they should start the game -->
     <form action='/game/{{deck["deck_id"]}}/{{deck["remaining"]}}'>
         <button class='btn btn-primary' type='submit'>Ready to play</button>
     </form>

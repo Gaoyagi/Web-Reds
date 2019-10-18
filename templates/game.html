@@ -5,18 +5,23 @@
 {% block content%}
     <table>
         <tr>
+            <!-- displays card back representing the deck, user can press the draw button or the image to draw a card -->
             <td>
-                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+                <form action='/game/draw/{{deckID}}/{{cardsLeft}}'>
+                    <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
+                </form>
                 <p>Deck: {{cardsLeft}} cards left</p>
                 <form  action='/game/draw/{{deckID}}/{{cardsLeft}}'>
                     <button class='btn btn-primary' type='submit'>Draw</button>
                 </form>
             </td>
+            <!-- check if discard pile is empty, if empty display icon, if not display the last discarded card to represent the pile -->
             <td>
                 <img src="{{url_for('static', filename= 'discard.jpeg')}}" alt="card back" height = 250 width=200>
                 <p>Discard Pile</p>
             </td>
         </tr>
+        <!-- displays card backs to repsent the player's hand -->
         <tr>
             <td>
                 <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>

@@ -10,31 +10,40 @@ displays deck, discard pile. player hand, and drawn card and give player option 
                 <p>Deck: {{cardsLeft}} cards left</p>
             </td>
             <td>
-                <form method='POST' action="/game/discard/{{deckID}}/{{card['code']}}">
+                <form action="/game/discard/{{ deckID }}/{{ cardsLeft }}/{{ card[0]['code'] }}">
                     <input type="image" src="{{url_for('static', filename= 'discard.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
                 </form>
                 <p>Discard pile</p>
+                <form  action="/game/discard/{{ deckID }}/{{ cardsLeft }}/{{ card[0]['code'] }}">
+                    <button class='btn btn-primary' type='submit'>Discard?</button>
+                </form>
+                
             </td>
         </tr>
         <tr>
             <td>
-                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
+                <form method="POST" action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/{{ card[0] }}/0">
+                    <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
+                </form>
             </td>
             <td>
-                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
-            </td>
+                <form method="POST" action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/{{ card[0] }}/1">
+                    <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
+                </form>           
             <td>
-                <img src='{{card["image"]}}' alt="drawn card" height=250 width=200>
+                <img src="{{ card[0]['image'] }}" alt="{{ card[0]['code'] }}" height=250 width=200>
             </td>
             
         </tr>
         <tr>
             <td>
-                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
-            </td>
+                <form method="POST" action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/{{ card[0] }}/2">
+                    <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
+                </form>            
             <td>
-                <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
-            </td>
+                <form method="POST" action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/{{ card[0] }}/3">
+                    <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
+                </form>           
                 
         </tr>
     </table>

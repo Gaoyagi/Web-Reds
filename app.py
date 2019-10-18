@@ -8,6 +8,13 @@ app = Flask(__name__)
 hand = []                   #holds the content of players hand
 emptyDiscard = True         #bool to chekc if the discard pile is empty or not
 
+#variable names that you will seen get passed around:
+    #deckID: contains the ID for the current deck, needed to draw and shuffle for the deck
+    #cardsLeft: counter number of cards currently left in the deck so I cna display it below the dekc image
+    #emptyDiscard: checks if the the disscard pile is empty, used to determine what image to show for the discard pile in game.html
+    #hand list: used so I can keep easily keep track of what cards the player has so i dont have to keep requesting and converting a response object
+        #hand[0] and hand[1] represent the 2 top cards and hand[2] and hand[3] represent the 2 bottom cards that are shown the player at the beginning
+
 #route for home page
 @app.route('/')
 def index():
@@ -28,29 +35,38 @@ def gameStart():
     #adds the drawn cards to the hand list
     for card in deckHand["cards"]:
         hand.append(card)
+        #creates/adds cards to a new "hand" pile
         requests.get("https://deckofcardsapi.com/api/deck/{}/pile/hand/add/?cards={}".format(deckHand["deck_id"], card["code"]))
     return render_template('start.html', deck=deckHand, hands=hand)
 
-@app.route('/game/<deckID>/<cardsLeft>/<empty')
-def game(deckID, cardsLeft, emptyDiscard):
-    return render_template('game.html', deckID=deckID, cardsLeft=cardsLeft, emptyDiscard=emptyDiscard)
+#route to display general game board
+@app.route('/game/<deckID>/<cardsLeft>')
+def game(deckID, cardsLeft):
+    return render_template('game.html', deckID=deckID, cardsLeft=cardsLeft)
 
+#route to show game board with a drawn card
 @app.route('/game/draw/<deckID>/<cardsLeft>')
 def draw(deckID, cardsLeft):
-    card = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/draw/?count=1")
-    card = card.json()
-    return render_template('draw.html', deckID=deckID, card=card["cards"], cardsLeft=card['remaining'])    
+    #draws a card from the deck and 
+    card = requests.get("https://deckofcardsapi.com/api/deck/{}/draw/?count=1".format(deckID))
+    card = card.json()      #converts response object to json dictionary so I can parse through it
+    return render_template('draw.html', deckID=deckID, card=card['cards'], cardsLeft=card['remaining'])    
 
-@app.route('/game/discard/<deckID>/<cardsLeft>/<cardValue>')
-def discard(deckID, cardsLeft, cardValue):
+#route to deal with if player discards drawn card
+@app.route('/game/discard/<deckID>/<cardsLeft>/<cardCode>')
+def discard(deckID, cardsLeft, cardCode):
     emptyDiscard = False
-    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/add/?cards={cardValue}")
-    return redirect(url_for('game', deckID=deckID, cardsLeft=cardsLeft, emptyDiscard=emptyDiscard))
+    #creates/adds cards to a discard pile
+    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/add/?cards={cardCode}")
+    return redirect(url_for('game', deckID=deckID, cardsLeft=cardsLeft))
 
-# @app.route('/game/exchange/<cardValue>/<cardNum>')
-# def exchange():
-
-
+@app.route('/game/exchange/<deckID>/<cardsLeft>/<card>/<position>')
+def exchange(deckID, cardsLeft, card, position):
+    emptyDiscard = False
+    changed = hand[position]
+    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/add/?cards={changed['code']}")
+    hand[position] = card
+    return redirect(url_for('game', deckID=deckID, cardsLeft=cardsLeft))
 
 
 #@app.route('/game/declare')
