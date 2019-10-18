@@ -21,13 +21,13 @@ displays deck, discard pile. player hand, and drawn card and give player option 
             </td>
         </tr>
         <tr>
-            <td>
-                <form method="POST" action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/{{ card[0] }}/0">
+            <td>    
+                <form action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/0/{{ card[0]['code'] }}">
                     <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
                 </form>
             </td>
             <td>
-                <form method="POST" action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/{{ card[0] }}/1">
+                <form action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/1/{{ card[0]['code'] }}">
                     <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
                 </form>           
             <td>
@@ -37,11 +37,11 @@ displays deck, discard pile. player hand, and drawn card and give player option 
         </tr>
         <tr>
             <td>
-                <form method="POST" action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/{{ card[0] }}/2">
+                <form action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/2/{{ card[0]['code'] }}">
                     <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
                 </form>            
             <td>
-                <form method="POST" action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/{{ card[0] }}/3">
+                <form action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/3/{{ card[0]['code'] }}">
                     <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
                 </form>           
                 

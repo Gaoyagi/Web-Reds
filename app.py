@@ -6,7 +6,60 @@ import requests
 app = Flask(__name__)
 
 hand = []                   #holds the content of players hand
-emptyDiscard = True         #bool to chekc if the discard pile is empty or not
+values = {
+    '2S':[2,"2 of Spades"],
+    '2C':[2,"2 of Clubs"],
+    '2H':[2,"2 of Hearts"],
+    '2D':[2,"2 of Diamonds"],
+    '3S':[3,"3 of Spades"],
+    '3C':[3,"3 of Clubs"],
+    '3H':[3,"3 of Hearts"],
+    '3D':[3,"3 of Diamonds"],
+    '4S':[4,"4 of Spades"],
+    '4C':[4,"4 of Clubs"],
+    '4H':[4,"4 of Hearts"],
+    '4D':[4,"4 of Diamonds"],
+    '5S':[5,"5 of Spades"],
+    '5C':[5,"5 of Clubs"],
+    '5H':[5,"5 of Hearts"],
+    '5D':[5,"5 of Diamonds"],
+    '6S':[6,"6 of Spades"],
+    '6C':[6,"6 of Clubs"],
+    '6H':[6,"6 of Hearts"],
+    '6D':[6,"6 of Diamonds"],
+    '7S':[7,"7 of Spades"],
+    '7C':[7,"7 of Clubs"],
+    '7H':[7,"7 of Hearts"],
+    '7D':[7,"7 of Diamonds"],
+    '8S':[8,"8 of Spades"],
+    '8C':[8,"8 of Clubs"],
+    '8H':[8,"8 of Hearts"],
+    '8D':[8,"8 of Diamonds"],
+    '9S':[9,"9 of Spades"],
+    '9C':[9,"9 of Clubs"],
+    '9H':[9,"9 of Hearts"],
+    '9D':[9,"9 of Diamonds"],
+    '10S':[10,"10 of Spades"],
+    '10C':[10,"10 of Clubs"],
+    '10H':[10,"10 of Hearts"],
+    '10D':[10,"10 of Diamonds"],
+    'JS':[10,"Jack of Spades"],
+    'JC':[10,"Jack of Clubs"],
+    'JH':[10,"Jack of Hearts"],
+    'JD':[10,"Jack of Diamonds"],
+    'QS':[10,"Queen of Spades"],
+    'QC':[10,"Queen of Clubs"],
+    'QH':[10,"Queen of Hearts"],
+    'QD':[10,"Queen of Diamonds"],
+    'KS':[10,"King of Spades"],
+    'KC':[10,"King of Clubs"],
+    'KH':[-2,"King of Hearts"],
+    'KD':[-2,"King of Diamonds"],
+    'AS':[1,"Ace of Spades"],
+    'AC':[1,"Ace of Clubs"],
+    'AH':[1,"Ace of Hearts"],
+    'AD':[1,"Ace of Diamonds"]
+}
 
 #variable names that you will seen get passed around:
     #deckID: contains the ID for the current deck, needed to draw and shuffle for the deck
@@ -60,17 +113,26 @@ def discard(deckID, cardsLeft, cardCode):
     requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/add/?cards={cardCode}")
     return redirect(url_for('game', deckID=deckID, cardsLeft=cardsLeft))
 
-@app.route('/game/exchange/<deckID>/<cardsLeft>/<card>/<position>')
-def exchange(deckID, cardsLeft, card, position):
+@app.route('/game/exchange/<deckID>/<cardsLeft>/<position>/<cardCode>')
+def exchange(deckID, cardsLeft, position, cardCode):
     emptyDiscard = False
-    changed = hand[position]
-    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/add/?cards={changed['code']}")
-    hand[position] = card
+    position = int(position)
+    changed = hand[position]          #gets the card that will be replaced
+    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/add/?cards={cardCode}")        #adds new card to the hand pile
+    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/draw/?cards={changed['code']}")       #draws the card to remove from the hand pile
+    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/add/?cards={changed['code']}")     #adds the removed card to the discard pile
+    card = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/list/")
+    card = card.json()
+    card = card['piles']['hand']['cards']
+    for item in card:
+        if item['code'] == cardCode:
+            hand[position] = item
     return redirect(url_for('game', deckID=deckID, cardsLeft=cardsLeft))
 
-
-#@app.route('/game/declare')
-#def declare():
+@app.route('/game/declare')
+def declare():
+    final = values[hand[0]['code']][0] + values[hand[1]['code']][0] + values[hand[2]['code']][0] + values[hand[3]['code']][0]
+    return render_template("declare.html", hands=hand, values=values, final=final)
 
 #going to need at least 3 more additional routes, one for drawing a card, one for shuffling, and one for end screen stuff?
 

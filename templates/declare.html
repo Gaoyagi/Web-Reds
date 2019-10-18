@@ -1,0 +1,31 @@
+<!-- templates/declare.html -->
+<!-- the page that shows the tallied up score of your hand -->
+{% extends 'base.html' %}
+
+{% block content%}
+    <!-- displays card backs to repsent the player's hand -->
+    <table>
+        <tr>
+            <td>
+                <p>{{values[hands[0]['code']][1]}}</p>
+                <img src="{{hands[0]['image']}}" alt="card back" height = 250 width=200>
+            </td>
+            <td>
+                <p>{{values[hands[1]['code']][1]}}</p>
+                <img src="{{hands[1]['image']}}" alt="card back" height = 250 width=200>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>{{values[hands[2]['code']][1]}}</p>
+                <img src="{{hands[2]['image']}}" alt="card back" height = 250 width=200>
+            </td>
+            <td>
+                <p>{{values[hands[3]['code']][1]}}</p>
+                <img src="{{hands[3]['image']}}" alt="card back" height = 250 width=200>
+            </td>
+        </tr>
+    </table>
+
+    <h4>Your Score: {{values[hands[0]['code']][0]}} + {{values[hands[1]['code']][0]}} + {{values[hands[2]['code']][0]}} + {{values[hands[3]['code']][0]}} = {{final}}</h4>
+{% endblock %}
