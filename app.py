@@ -64,10 +64,7 @@ values = {
 #variable names that you will seen get passed around:
     #deckID: contains the ID for the current deck, needed to draw and shuffle for the deck
     #cardsLeft: counter number of cards currently left in the deck so I cna display it below the dekc image
-    #emptyDiscard: checks if the the disscard pile is empty, used to determine what image to show for the discard pile in game.html
-    #hand list: used so I can keep easily keep track of what cards the player has so i dont have to keep requesting and converting a response object
-        #hand[0] and hand[1] represent the 2 top cards and hand[2] and hand[3] represent the 2 bottom cards that are shown the player at the beginning
-
+    
 #route for home page
 @app.route('/')
 def index():
@@ -96,6 +93,10 @@ def gameStart():
 #route to display general game board
 @app.route('/game/<deckID>/<cardsLeft>')
 def game(deckID, cardsLeft):
+    # emptyDiscard = bool(emptyDiscard)
+    # if not emptyDiscard:
+    #     topDiscard = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/draw/?count=1")
+    #     topDiscard = topDiscard.json()
     return render_template('game.html', deckID=deckID, cardsLeft=cardsLeft)
 
 #route to show game board with a drawn card

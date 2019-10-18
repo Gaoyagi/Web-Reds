@@ -5,12 +5,14 @@ displays deck, discard pile. player hand, and drawn card and give player option 
 {% block content%}
     {{hands}}
     <table>
+        <!-- displays the card back fro the deck and a discard pile icon -->
         <tr>
             <td>
                 <img src="{{url_for('static', filename= 'cardBack.jpeg')}}" alt="card back" height = 250 width=200>
                 <p>Deck: {{cardsLeft}} cards left</p>
             </td>
             <td>
+                <!-- discard pile button(s) for the user to discard their drawn card -->
                 <form action="/game/discard/{{ deckID }}/{{ cardsLeft }}/{{ card[0]['code'] }}">
                     <input type="image" src="{{url_for('static', filename= 'discard.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
                 </form>
@@ -21,6 +23,7 @@ displays deck, discard pile. player hand, and drawn card and give player option 
                 
             </td>
         </tr>
+        <!-- displays card back for each card they have, each  card is a button that you can click to exchange cards with -->
         <tr>
             <td>    
                 <form action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/0/{{ card[0]['code'] }}">
@@ -31,6 +34,7 @@ displays deck, discard pile. player hand, and drawn card and give player option 
                 <form action="/game/exchange/{{ deckID }}/{{ cardsLeft }}/1/{{ card[0]['code'] }}">
                     <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
                 </form>           
+            <!-- drawn card displayed here -->
             <td>
                 <img src="{{ card[0]['image'] }}" alt="{{ card[0]['code'] }}" height=250 width=200>
             </td>

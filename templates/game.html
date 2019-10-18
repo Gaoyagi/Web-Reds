@@ -7,6 +7,7 @@
         <tr>
             <!-- displays card back representing the deck, user can press the draw button or the image to draw a card -->
             <td>
+                <!-- draw button for user to draw a card -->
                 <form action='/game/draw/{{deckID}}/{{cardsLeft}}'>
                     <input type="image" src="{{url_for('static', filename= 'cardBack.jpeg')}}" name="saveForm" class="btTxt submit" id="saveForm" height=250 width=200/> 
                 </form>
@@ -42,6 +43,7 @@
             </tr>
     </table>
 
+    <!-- declare button to say youre ready to end the game and calculate your score -->
     <form  action='/game/declare/{{deckID}}'>
         <button class='btn btn-primary' type='submit'>Declare</button>
     </form>

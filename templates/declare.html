@@ -27,7 +27,9 @@
         </tr>
     </table>
 
+    <!-- displays the user's score -->
     <h4>Your Score: {{values[hands[0]['code']][0]}} + {{values[hands[1]['code']][0]}} + {{values[hands[2]['code']][0]}} + {{values[hands[3]['code']][0]}} = {{final}}</h4>
+    <!-- button to play again -->
     <form action="{{ url_for('gameStart') }}">
         <button class='btn btn-primary' type='submit'>Play Again</button>
     </form>
