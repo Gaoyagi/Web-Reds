@@ -82,6 +82,7 @@ def rules():
 #creates shuffled deck and deals each player 4 cards
 @app.route('/game/start')
 def gameStart():
+    hand.clear()
     #shuffles new deck and draws a hand for the player
     deckHand = requests.get("https://deckofcardsapi.com/api/deck/new/draw/?count=4")
     deckHand = deckHand.json()
@@ -133,17 +134,17 @@ def exchange(deckID, cardsLeft, position, cardCode):
 @app.route('/game/declare/<deckID>')
 def declare(deckID):
     #clears the hand pile
-    handClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/draw")
+    handClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/draw/?count=4")
     handClear = handClear.json()
-    while handClear["success"]:
-        handClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/draw")
-        handClear = handClear.json()
     
     #clear the discard pile
-    discardClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/draw")
+    card = requests.get("https://deckofcardsapi.com/api/deck/{}/draw/?count=1".format(deckID))
+    card = card.json()      #converts response object to json dictionary so I can parse through it
+    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/add/?cards={card['cards'][0]['code']}")   #adds card to discard pile to create one jsut in case it doesnt already
+    discardClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/draw/?count=1")
     discardClear = discardClear.json()
     while discardClear["success"]:
-        discardClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/draw")
+        discardClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/draw/?count=1")
         discardClear = discardClear.json()
 
     final = values[hand[0]['code']][0] + values[hand[1]['code']][0] + values[hand[2]['code']][0] + values[hand[3]['code']][0]
