@@ -130,8 +130,22 @@ def exchange(deckID, cardsLeft, position, cardCode):
             hand[position] = item
     return redirect(url_for('game', deckID=deckID, cardsLeft=cardsLeft))
 
-@app.route('/game/declare')
-def declare():
+@app.route('/game/declare/<deckID>')
+def declare(deckID):
+    #clears the hand pile
+    handClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/draw")
+    handClear = handClear.json()
+    while handClear["success"]:
+        handClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/draw")
+        handClear = handClear.json()
+    
+    #clear the discard pile
+    discardClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/draw")
+    discardClear = discardClear.json()
+    while discardClear["success"]:
+        discardClear = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/draw")
+        discardClear = discardClear.json()
+
     final = values[hand[0]['code']][0] + values[hand[1]['code']][0] + values[hand[2]['code']][0] + values[hand[3]['code']][0]
     return render_template("declare.html", hands=hand, values=values, final=final)
 
