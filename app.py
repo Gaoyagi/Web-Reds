@@ -117,8 +117,10 @@ def discard(deckID, cardsLeft, cardCode):
 def exchange(deckID, cardsLeft, position, cardCode):
     emptyDiscard = False
     position = int(position)
+    print(position)
+    print(hand)
     changed = hand[position]          #gets the card that will be replaced
-    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/add/?cards={cardCode}")        #adds new card to the hand pile
+    requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/add/?cards={cardCode}")               #adds new card to the pile
     requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/draw/?cards={changed['code']}")       #draws the card to remove from the hand pile
     requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/discard/add/?cards={changed['code']}")     #adds the removed card to the discard pile
     card = requests.get(f"https://deckofcardsapi.com/api/deck/{deckID}/pile/hand/list/")
