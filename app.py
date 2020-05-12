@@ -65,6 +65,14 @@ values = {
     #deckID: contains the ID for the current deck, needed to draw and shuffle for the deck
     #cardsLeft: counter number of cards currently left in the deck so I cna display it below the dekc image
     
+# ToDo list:
+# fix heroku bug that crashes game
+# add discard pile to show last discarded card
+# UI
+#
+
+
+
 #route for home page
 @app.route('/')
 def index():
@@ -81,16 +89,16 @@ def rules():
 def gameStart():
     hand.clear()
     #shuffles new deck and draws a hand for the player
-    deckHand = requests.get("https://deckofcardsapi.com/api/deck/new/draw/?count=4")
-    deckHand = deckHand.json()
+    deckHand = requests.get("https://deckofcardsapi.com/api/deck/new/draw/?count=4")    #makes API request
+    deckHand = deckHand.json()                                                          #converts reuest data to JSON
     #adds the drawn cards to the hand list
     for card in deckHand["cards"]:
         hand.append(card)
-        #creates/adds cards to a new "hand" pile
+        #sends API request to create/add cards to a new "hand" pile
         requests.get("https://deckofcardsapi.com/api/deck/{}/pile/hand/add/?cards={}".format(deckHand["deck_id"], card["code"]))
     return render_template('start.html', deck=deckHand, hands=hand)
 
-#route to display general game board
+#route to display general game board (hand, deck, discard)
 @app.route('/game/<deckID>/<cardsLeft>')
 def game(deckID, cardsLeft):
     # emptyDiscard = bool(emptyDiscard)
@@ -132,6 +140,7 @@ def exchange(deckID, cardsLeft, position, cardCode):
             hand[position] = item
     return redirect(url_for('game', deckID=deckID, cardsLeft=cardsLeft))
 
+#route to end the Game
 @app.route('/game/declare/<deckID>')
 def declare(deckID):
     #clears the hand pile
@@ -151,8 +160,10 @@ def declare(deckID):
     final = values[hand[0]['code']][0] + values[hand[1]['code']][0] + values[hand[2]['code']][0] + values[hand[3]['code']][0]
     return render_template("declare.html", hands=hand, values=values, final=final)
 
-#going to need at least 3 more additional routes, one for drawing a card, one for shuffling, and one for end screen stuff?
-
+# @app.route('/healthcheck')
+# def healthCheck():
+#     status_code = flask.Response(status=20)
+# 	return status_code
 
 
 if __name__ == '__main__':
