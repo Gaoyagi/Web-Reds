@@ -1,5 +1,5 @@
 #A web version of the game reds 
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, Response
 import requests
 
 
@@ -160,10 +160,9 @@ def declare(deckID):
     final = values[hand[0]['code']][0] + values[hand[1]['code']][0] + values[hand[2]['code']][0] + values[hand[3]['code']][0]
     return render_template("declare.html", hands=hand, values=values, final=final)
 
-# @app.route('/healthcheck')
-# def healthCheck():
-#     status_code = flask.Response(status=20)
-# 	return status_code
+@app.route('/healthcheck')
+def healthCheck():
+   return Response("{'Status':'200 OK'}", status=200, mimetype='application/json')
 
 
 if __name__ == '__main__':
